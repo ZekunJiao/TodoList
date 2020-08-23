@@ -8,26 +8,32 @@
     </head>
 
     <body>
-
-        <h1>Todo Liste</h1> 
-
-        <table id="table">
-            <tr id="head">
-                <th>Task</th>
-                <th>Finished</th>
-            </tr>   
-            <tr id="insert">
-                <th>
-                    <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" 
-                    onblur="this.placeholder = 'enter your text'">
-                </th>
-                <th>
-                    <button id="add" onclick="insert()">Add</button>
-                    <!-- <input id="checkbox" type="checkbox"> -->
-                </th>
-            </tr>
-        </table>
-
+        <div>
+            <h1>Todo Liste</h1> 
+            <table id="table1">
+                <tr>
+                    <th>Undone Task</th>
+                </tr>   
+                <tr id="insert">
+                    <td>
+                        <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" 
+                        onblur="this.placeholder = 'new task'">
+                    </td>
+                    <td>
+                        <button id="add" onclick="insert()">Add</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            
+        <div>
+            <table id="table2">
+                <tr>
+                    <th>Finished Tasks</th>
+                </tr>
+        
+            </table>
+        </div>
     </body>
     <script type="text/javascript" src="todo.js"></script>
 </html>
