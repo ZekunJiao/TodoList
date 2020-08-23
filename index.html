@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Todo List</title>
+    </head>
+
+    <body>
+
+        <h1>Todo Liste</h1> 
+
+        <table id="table">
+            <tr id="head">
+                <th>Task</th>
+                <th>Finished</th>
+            </tr>   
+            <tr id="insert">
+                <th>
+                    <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" 
+                    onblur="this.placeholder = 'enter your text'">
+                </th>
+                <th>
+                    <button id="add" onclick="insert()">Add</button>
+                    <!-- <input id="checkbox" type="checkbox"> -->
+                </th>
+            </tr>
+        </table>
+
+    </body>
+    <script type="text/javascript" src="todo.js"></script>
+</html>
