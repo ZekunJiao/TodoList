@@ -8,24 +8,31 @@ function insert(){
     }
 
     let table1 = document.getElementById("table1");
-    let row = table1.insertRow(2);
-    let cell0 = row.insertCell(0); 
-    let cell1 = row.insertCell(1);
-    let cell2 = row.insertCell(2);
 
-    let tick = document.createElement("INPUT");
-    tick.type = "checkbox";
+    let tick = document.createElement("I");
+    tick.classList.add("fas");
+    tick.classList.add("fa-check");  
+    tick.classList.add("task");  
     tick.onclick = tickOff;
 
-    let deleteButton = document.createElement("BUTTON");
-    deleteButton.innerHTML = "Delete";
-    deleteButton.onclick = deleteTask;
+    let trash = document.createElement("I");
+    trash.classList.add("fas");
+    trash.classList.add("fa-trash-alt");
+    trash.classList.add("task");
+    trash.onclick = deleteTask;
 
-    cell0.innerHTML = inputNewTask.value;
-    cell1.appendChild(tick);
-    cell2.appendChild(deleteButton);
+    let text = document.createElement("P");
+    text.classList.add("task");
+    text.innerHTML = document.getElementById("new-task").value;
+
+    let div = document.createElement("DIV");
+    div.appendChild(text);
+    div.appendChild(tick);
+    div.appendChild(trash);
+    table1.insertBefore(div, table1.firstChild);
 
     inputNewTask.value = '';
+
 }
 
 
@@ -38,46 +45,27 @@ document.getElementById("new-task").addEventListener("keyup", function(event){
 
 
 function deleteTask(){
-    let rowIndex = this.parentNode.parentNode.rowIndex;
-    let table = this.parentNode.parentNode.parentNode.parentNode;
-    table.deleteRow(rowIndex);
+    let table = this.parentNode.parentNode;
+    let task = this.parentNode;
+    if (table == table1)
+        table1.removeChild(task);
+    else 
+        table2.removeChild(task);
 }
 
 function tickOff(){
     let table1 = document.getElementById("table1");
     let table2 = document.getElementById("table2");
-    let rowIndex = this.parentNode.parentNode.rowIndex;
-    table1.deleteRow(rowIndex);
 
-    let row = table2.insertRow(1);
+    let task = this.parentNode;
 
-    let cell0 = row.insertCell(0);
-    let cell1 = row.insertCell(1);
-    let cell2 = row.insertCell(2);
-
-    let deleteButton = document.createElement("BUTTON");
-    deleteButton.innerHTML = "Delete";
-    deleteButton.onclick = deleteTask;
-
-    let tick = document.createElement("INPUT");
-    tick.id = "tick2";
-    tick.type = "checkbox";
-    tick.checked = true;
-    tick.onclick = tickBack;
-
-    cell0.innerHTML = this.parentNode.parentNode.cells[0].innerHTML;
-    cell1.appendChild(tick);
-    cell2.appendChild(deleteButton);
+    if (task.parentNode == table1){
+        table1.removeChild(task);  
+        table2.insertBefore(task, table2.firstChild);
+    }
+    else{
+        table2.removeChild(task);  
+        table1.insertBefore(task, table1.firstChild);
+    }
 }
 
-function tickBack(){
-    let table1 = document.getElementById("table1");
-    let table2 = document.getElementById("table2");
-    let rowIndex = this.parentNode.parentNode.rowIndex;
-    let content = table2.rows[rowIndex].cells[0].innerHTML;
-
-    document.getElementById("new-task").value = content;
-    document.getElementById("add").onclick();
-
-    table2.deleteRow(rowIndex);
-}

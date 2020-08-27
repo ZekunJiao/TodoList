@@ -1,39 +1,31 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Todo List</title>
     </head>
 
-    <body>
-        <div>
-            <h1>Todo Liste</h1> 
-            <table id="table1">
-                <tr>
-                    <th>Undone Task</th>
-                </tr>   
-                <tr id="insert">
-                    <td>
-                        <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" 
-                        onblur="this.placeholder = 'new task'">
-                    </td>
-                    <td>
-                        <button id="add" onclick="insert()">Add</button>
-                    </td>
-                </tr>
-            </table>
+    <body>        
+        <div class="container1">
+            <h1 class="title">Todo Liste</h1> 
         </div>
-            
-        <div>
-            <table id="table2">
-                <tr>
-                    <th>Finished Tasks</th>
-                </tr>
-        
-            </table>
+        <div class="container2">
+            <p>Undone Task</p>
+            <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
+            <button id="add" onclick="insert()">Add</button>
+
+            <div id="table1" class="table1"></div>
+
+            <p>Finished Task</p>
+            <div id="table2" class="table2">
+
+            </div>
+
         </div>
     </body>
-    <script type="text/javascript" src="todo.js"></script>
+    <script src="todo.js"></script>
 </html>
