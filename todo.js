@@ -11,24 +11,25 @@ function insert(){
 
     let tick = document.createElement("I");
     tick.classList.add("fas");
-    tick.classList.add("fa-check");  
-    tick.classList.add("task");  
+    tick.classList.add("fa-check");
+    tick.classList.add("unchecked")  
     tick.onclick = tickOff;
 
     let trash = document.createElement("I");
     trash.classList.add("fas");
     trash.classList.add("fa-trash-alt");
-    trash.classList.add("task");
     trash.onclick = deleteTask;
 
     let text = document.createElement("P");
-    text.classList.add("task");
+    text.classList.add("text");
     text.innerHTML = document.getElementById("new-task").value;
 
     let div = document.createElement("DIV");
     div.appendChild(text);
     div.appendChild(tick);
     div.appendChild(trash);
+    div.classList.add("task-div");
+
     table1.insertBefore(div, table1.firstChild);
 
     inputNewTask.value = '';
@@ -60,12 +61,19 @@ function tickOff(){
     let task = this.parentNode;
 
     if (task.parentNode == table1){
+        task.children[1].classList.remove("unchecked");
         table1.removeChild(task);  
         table2.insertBefore(task, table2.firstChild);
     }
     else{
+        task.children[1].classList.add("unchecked");
+
         table2.removeChild(task);  
         table1.insertBefore(task, table1.firstChild);
     }
+}
+
+function update(){
+    
 }
 

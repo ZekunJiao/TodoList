@@ -2,19 +2,83 @@
     font-family: Arial, sans-serif; 
 }
 
+.container-outer {
+    width: 400px; 
+    margin: 0 auto; 
+}
 
 /* headline 
-_____________________________________ */
+_______________________________________________ */
+#new-task {
+    width: 85%;
+}
 
+#add {
+    width: 13%;
+    margin: -1%;
+}
+
+.title {
+    text-align: center;
+}
 
 
 /* Task
-_____________________________________ */
+_______________________________________________ */
+.task-div {
+    margin: 5px 0;
+    padding-left: 1%;
+    border: solid;
+    border-radius: 5px;
+}
 
-.task {
-    /* background-color: blue; */
-    margin: 0 30px 0;
-    display: inline;
+.fas {
+    /* margin: 0 10px 0 0; */
+    padding-top: 5px;
+    padding-bottom: 5px; 
+    display: inline-block;
+}
+
+.text {
+    margin: 0 5px 0 0;
+    width: 87%;
+    overflow-wrap: break-word;
+    display: inline-block;
+}
+
+.fa-check {
+    margin-right: 3%;
+    padding: 2px;
+    font-size: x-small;
+    border-style: solid;
+    border-width: thin;
+    background: rgb(120, 230, 93);
+    border-radius: 50%;
+}
+
+.fa-check:hover {
+    background: rgb(233, 101, 118);
+}
+
+.fa-trash-alt {
+    margin: 0;
+    font-size: small;
+    border-style: none;
+}
+
+.fa-trash-alt:hover {
+    color: red;
+}
+
+.unchecked {
+    background: transparent;
+    border-color: black;
+    color: transparent;
+}
+
+.unchecked:hover{
+    background-color: rgb(213, 243, 210);
+    color: black;
 }
 
 

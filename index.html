@@ -9,22 +9,30 @@
         <title>Todo List</title>
     </head>
 
-    <body>        
-        <div class="container1">
-            <h1 class="title">Todo Liste</h1> 
-        </div>
-        <div class="container2">
-            <p>Undone Task</p>
-            <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
-            <button id="add" onclick="insert()">Add</button>
+    <body>
+        <div class="container-outer">        
+            <div class="container-title">
+                <h1 class="title" style="text-align:center;">Todo Liste</h1> 
+            </div>
+            <div id="container2" class="container2">
+                <p class="undone-task">Undone Task</p>
+                <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
+                <button id="add" onclick="insert()">Add</button>
 
-            <div id="table1" class="table1"></div>
+                <div id="table1" class="table1">
+                    <!-- <div class="task-div">
+                        <p class="text">asdf</p>
+                        <i class="fas fa-check unchecked" onclick=tickOff()></i>
+                        <i class="fas fa-trash-alt" onclick=deleteTask()></i>
+                    </div> -->
+                </div>
 
-            <p>Finished Task</p>
-            <div id="table2" class="table2">
+                <p>Finished Task</p>
+                <div id="table2" class="table2">
+
+                </div>
 
             </div>
-
         </div>
     </body>
     <script src="todo.js"></script>
