@@ -81,9 +81,26 @@ _______________________________________________ */
     color: black;
 }
 
+#undone-count {
+    color: red;
+    font-weight: bold;
+}
 
+#finished-count {
+    font-weight: bold;
+    color: green;
+}
 
-.test{
-    background-color: yellow;
+.undone-task, .finished-task {
+    margin: 10px 0;
+}
+
+.undone-task-div, .finished-task-div {
+    margin: 40px 0;
+}
+
+#remove-all-undone, #remove-all-finished {
+    margin-left: 5%;
+    border-radius: 5px;
 }
 

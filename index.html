@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html id="html">
     <head>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
@@ -15,23 +15,21 @@
                 <h1 class="title" style="text-align:center;">Todo Liste</h1> 
             </div>
             <div id="container2" class="container2">
-                <p class="undone-task">Undone Task</p>
-                <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
-                <button id="add" onclick="insert()">Add</button>
-
-                <div id="table1" class="table1">
-                    <!-- <div class="task-div">
-                        <p class="text">asdf</p>
-                        <i class="fas fa-check unchecked" onclick=tickOff()></i>
-                        <i class="fas fa-trash-alt" onclick=deleteTask()></i>
-                    </div> -->
+                <div class=undone-task-div>
+                    <p class="undone-task">Undone Task: <span id="undone-count">0</span> <button id="remove-all-undone">Remove All</button> </p>
+                    <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
+                    <button id="add" onclick="insert()">Add</button>
+                    <div id="table1" class="table1">
+            
+                    </div>
                 </div>
 
-                <p>Finished Task</p>
-                <div id="table2" class="table2">
+                <div class=finished-task-div>
+                    <p class="finished-task">Finished Task: <span id="finished-count">0</span><button id="remove-all-finished">Remove All</button></p>
+                    <div id="table2" class="table2"> 
 
+                    </div>
                 </div>
-
             </div>
         </div>
     </body>
