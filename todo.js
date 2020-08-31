@@ -5,18 +5,19 @@ if (localStorage.getItem("changed") == "true"){
 }
 // console.log(document.getElementById("html").innerHTML);
 function insert(){
+    if (document.getElementById("new-task").value == ''){
+        alert("Task is empty!");
+        return;
+    }
+
     let table1 = document.getElementById("table1");
-    table1.innerHTML = "<div class='task-div'><p class='text'>" + document.getElementById('new-task').value + 
+    table1.innerHTML = "<div class='task-div' onmouseenter='pressed()' onmouseleave='unpressed()'><i class='fas fa-caret-down'></i><p class='text'>" + document.getElementById('new-task').value + 
     "</p><i id='tick' class='fas fa-check unchecked' onclick='tickOfftable1()'></i><i class='fas fa-trash-alt' onclick='deleteTask()'></i></div>"
      + table1.innerHTML;
     
     // let inputNewTask = document.getElementById("new-task");
 
-    // if (inputNewTask.value == ''){
-    //     alert("Task is empty!");
-    //     return;
-    // }
-
+    
     // let table1 = document.getElementById("table1");
     // let div = document.createElement("DIV");
     // table1.insertBefore(div, table1.firstChild);
@@ -65,6 +66,33 @@ document.getElementById("new-task").addEventListener("keyup", function(event){
         document.getElementById("add").onclick();
     }
 });
+
+function pressed() {   
+    let task = event.target;
+    console.log(task);
+
+    task.style.borderTop = "solid";
+    task.style.borderLeft = "solid";
+    task.style.borderBottom = "none";
+    task.style.borderRight = "none";
+    task.children[0].style.color = "blue";
+}
+
+function unpressed() {
+    let task = event.target;
+    task.style.borderTop = "none";
+    task.style.borderLeft = "none";
+    task.style.borderBottom = "solid";
+    task.style.borderRight = "solid";
+    task.children[0].style.color = "black";
+
+}
+
+function save(){
+    localStorage.setItem("page", document.getElementById("html").innerHTML);
+    localStorage.setItem("changed", "true");
+    alert("a");
+}
 
 function removeAll() {
     if (!confirm("Are you sure?")){
@@ -119,12 +147,12 @@ function tickOfftable1(){
     // table2.insertBefore(a.parentNode, table2.firstChild);
 
     if (task.parentNode == table1){
-        task.children[1].classList.remove("unchecked");
+        task.children[2].classList.remove("unchecked");
         table1.removeChild(task);  
         table2.insertBefore(task, table2.firstChild);
     }
     else{
-        task.children[1].classList.add("unchecked");
+        task.children[2].classList.add("unchecked");
 
         table2.removeChild(task);  
         table1.insertBefore(task, table1.firstChild);

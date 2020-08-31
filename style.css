@@ -7,6 +7,12 @@
     margin: 0 auto; 
 }
 
+body {
+    background-image: url("images\\photo-1518655048521-f130df041f66.jfif");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 /* headline 
 _______________________________________________ */
 #new-task {
@@ -28,8 +34,11 @@ _______________________________________________ */
 .task-div {
     margin: 5px 0;
     padding-left: 1%;
-    border: solid;
+    border-bottom: solid;
+    border-right: solid;
     border-radius: 5px;
+    background-image: url("images\\WoodBackground54342.jpg");
+    background-size: cover;
 }
 
 .fas {
@@ -41,10 +50,17 @@ _______________________________________________ */
 
 .text {
     margin: 0 5px 0 0;
-    width: 87%;
+    width: 80.5%;
     overflow-wrap: break-word;
     display: inline-block;
 }
+
+.fa-caret-down{
+    margin-right: 2%;
+    padding: 3px 5px 3px 2px;
+}
+
+
 
 .fa-check {
     margin-right: 3%;
