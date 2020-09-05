@@ -1,7 +1,4 @@
 // localStorage.clear();   
-// console.log(document.getElementById("html").innerHTML);
-
-// console.log(document.getElementById("html").innerHTML);
 let undoneMap = new Map([]);
 let doneMap = new Map([]);
 
@@ -22,8 +19,6 @@ for (let value of doneMap.values()) {
 }
 
 table1 = document.getElementById("table1");
-
-
 document.getElementById("remove-all-undone").onclick = removeAll;
 document.getElementById("remove-all-finished").onclick = removeAll;
 
@@ -51,6 +46,10 @@ function insert(name, id, done){
 
     dropDown.classList.add("fas");
     dropDown.classList.add("fa-caret-down");
+    dropDown.onmousedown = taskPressed;
+    dropDown.onmouseup = taskUnpressed;
+
+
     tick.classList.add("fas");
     tick.classList.add("fa-check");
     if (!done)
@@ -71,7 +70,15 @@ function insert(name, id, done){
     taskDiv.appendChild(tick);
     taskDiv.appendChild(trash);
 
-    table.insertBefore(taskDiv, table.firstChild);
+    let bigDiv = document.createElement("DIV");
+    let uTaskDiv = document.createElement("DIV");
+
+    bigDiv.appendChild(taskDiv);
+    bigDiv.appendChild(uTaskDiv);
+    table.insertBefore(bigDiv, table.firstChild);
+
+    uTaskDiv.classList.add("not-show");
+    uTaskDiv.innerHTML = "a";
 
     document.getElementById("new-task").value = '';
     updateCount();
@@ -95,40 +102,38 @@ function saveAdd(){
 
     undoneMap.set(taskRep.id, taskRep);
     localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
-    // console.log(undoneArray);
 }
 
 function deleteTask(){
-    let task = event.target.parentNode;
+    let task = event.target.parentNode.parentNode;
     let table = task.parentNode;
 
     if (table == table1){
         table1.removeChild(task);
-        undoneMap.delete(parseInt(task.id));
+        undoneMap.delete(parseInt(task.children[0].id));
         localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
         
     }
     else {
         table2.removeChild(task);
-        doneMap.delete(parseInt(task.id));
+        doneMap.delete(parseInt(task.children[0].id));
         localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
     }
-    
     
     updateCount();
 }
 
 function tickOff(){
-    // alert("a");
     let table1 = document.getElementById("table1");
     let table2 = document.getElementById("table2");
-    let task = event.target.parentNode;
+    let bigTask = event.target.parentNode.parentNode;
+    let task = bigTask.children[0];
     let taskRep;
 
-    if (task.parentNode == table1){
+    if (bigTask.parentNode == table1){
         task.children[2].classList.remove("unchecked");
-        table1.removeChild(task);  
-        table2.insertBefore(task, table2.firstChild);
+        table1.removeChild(bigTask);  
+        table2.insertBefore(bigTask, table2.firstChild);
         taskRep = undoneMap.get(parseInt(task.id));
         undoneMap.delete(parseInt(task.id));
         localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
@@ -137,84 +142,65 @@ function tickOff(){
     }
     else{
         task.children[2].classList.add("unchecked");
-        table2.removeChild(task);  
-        table1.insertBefore(task, table1.firstChild);
+        table2.removeChild(bigTask);  
+        table1.insertBefore(bigTask, table1.firstChild);
         taskRep = doneMap.get(parseInt(task.id));
         doneMap.delete(parseInt(task.id));
         localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
         undoneMap.set(taskRep.id, taskRep);
         localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
     }
-    updateCount();
-    
+
+    updateCount();   
 }
 
 function dropDown(){
-    let caller = event.target;
-    if (caller.classList.contains("fa-check") || caller.classList.contains("fa-trash-alt")){
-        return;
-    }
-
-    if (caller.classList.contains("text") || caller.classList.contains("fa-caret-down")){
-        caller = caller.parentNode;
-    }
-    
-    // if (caller.nextSibling.classList.contains("not-drop-down")) {
-    //     caller.nextSibling.classList.remove("not-drop-down");
-    //     caller.nextSibling.classList.add("drop-down");
-    // }
-
-    // caller.nextSibling.classList.toggle("not-drop-down");
+    uTaskShow();
+    let caller = event.target.nextSibling;
 }
-
-
-function pressed() {   
-    let task = event.target;
-    task.style.borderTop = "solid";
-    task.style.borderLeft = "solid";
-    task.style.borderBottom = "none";
-    task.style.borderRight = "none";
-    task.children[0].style.color = "blue";
-}
-
-function unpressed() {
-    let task = event.target;
-    task.style.borderTop = "none";
-    task.style.borderLeft = "none";
-    task.style.borderBottom = "solid";
-    task.style.borderRight = "solid";
-    task.children[0].style.color = "black";
-
-}
-
-
 
 function removeAll() {
+
     if (!confirm("Are you sure?")){
         return;
     }
 
     let table;
+    let map;
     
     if (this == document.getElementById("remove-all-undone")){
         table = document.getElementById("table1");
+        undoneMap.clear();
+        localStorage.removeItem("undoneMap");
     }
     else {
         table = document.getElementById("table2");
+        doneMap.clear();
+        localStorage.removeItem("doneMap");
     }
-
-    // console.log(table.firstChild);
-    // table.remove(table.lastChild);
-    // console.log(table.firstChild);
 
     table.innerHTML = "";
     updateCount();
-    localStorage.setItem("page", document.getElementById("html").innerHTML);
-    localStorage.setItem("changed", "true");
+    
 }
 
 function updateCount(){
     document.getElementById("undone-count").innerHTML = table1.children.length;
     document.getElementById("finished-count").innerHTML = table2.children.length;
+}
+
+function taskPressed() {
+    let task = event.target.parentNode;
+    task.classList.toggle("pressed");
+    dropDown()
+}
+
+function taskUnpressed() {
+    let task = event.target.parentNode;
+    task.classList.toggle("pressed");
+}
+
+function uTaskShow() {
+    event.target.parentNode.nextSibling.classList.toggle("not-show");
 }
 

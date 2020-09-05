@@ -2,6 +2,10 @@
     font-family: Arial, sans-serif; 
 }
 
+.not-show {
+    display: none;
+}
+
 .container-outer {
     width: 400px; 
     margin: 0 auto; 
@@ -28,7 +32,6 @@ _______________________________________________ */
     text-align: center;
 }
 
-
 /* Task
 _______________________________________________ */
 .task-div {
@@ -39,6 +42,13 @@ _______________________________________________ */
     border-radius: 5px;
     background-image: url("images\\WoodBackground54342.jpg");
     background-size: cover;
+}
+
+.pressed.task-div {
+    border-top: solid;
+    border-left: solid;
+    border-bottom: none;
+    border-right: none;
 }
 
 .fas {
@@ -60,7 +70,9 @@ _______________________________________________ */
     padding: 3px 5px 3px 2px;
 }
 
-
+.fa-caret-down:hover {
+    color: blue;
+}
 
 .fa-check {
     margin-right: 3%;
