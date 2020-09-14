@@ -2,6 +2,7 @@
 let undoneMap = new Map([]);
 let doneMap = new Map([]);
 
+
 if (localStorage.getItem("undoneMap")){
     undoneMap = new Map(JSON.parse(localStorage.getItem("undoneMap")));
 }
@@ -11,11 +12,12 @@ if (localStorage.getItem("doneMap")){
 }
 
 for (let value of undoneMap.values()) {
-    insert(value.name, value.id, false);
+    insert(value.name, value.id, false, value.desc);
+    console.log(value.desc);
 }
 
 for (let value of doneMap.values()) {
-    insert(value.name, value.id, true);
+    insert(value.name, value.id, true, value.desc);
 }
 
 table1 = document.getElementById("table1");
@@ -29,7 +31,7 @@ document.getElementById("new-task").addEventListener("keyup", function(event){
     }
 });
 
-function insert(name, id, done){
+function insert(name, id, done, desc){
     let table;
     if (!done){
         table = document.getElementById("table1");
@@ -70,18 +72,43 @@ function insert(name, id, done){
     taskDiv.appendChild(tick);
     taskDiv.appendChild(trash);
 
-    let bigDiv = document.createElement("DIV");
-    let uTaskDiv = document.createElement("DIV");
+    let descDiv = document.createElement("DIV");
+    let descText = document.createElement("TEXTAREA");
+    let cross = document.createElement("I");
 
+    descText.classList.add("desc-text");
+    cross.classList.add("fas");
+    cross.classList.add("fa-times");
+    cross.addEventListener("click", function(){
+        descText.value = "";
+        if (!done){
+            undoneMap.get(parseInt(taskDiv.id)).desc = descText.value;
+            localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+        }
+        else{
+            doneMap.get(parseInt(taskDiv.id)).desc = descText.value;
+            localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+        }
+    });
+    descText.onchange = saveDesc;
+    descText.value = desc;
+    descDiv.appendChild(descText);
+    descDiv.appendChild(cross);
+
+    let bigDiv = document.createElement("DIV");
     bigDiv.appendChild(taskDiv);
-    bigDiv.appendChild(uTaskDiv);
+    bigDiv.appendChild(descDiv);
+    
+
     table.insertBefore(bigDiv, table.firstChild);
 
-    uTaskDiv.classList.add("not-show");
-    uTaskDiv.innerHTML = "a";
+    descDiv.classList.add("not-show");
+    descDiv.value = "a";
 
     document.getElementById("new-task").value = '';
+    document.getElementById("new-task").focus();
     updateCount();
+
 }
 
 function saveAdd(){
@@ -95,10 +122,11 @@ function saveAdd(){
     const taskRep = {
         id: Date.now(),
         name: taskName,
-        done: false
+        // done: false
+        desc: ""
     };
 
-    insert(taskName, taskRep.id, false);
+    insert(taskName, taskRep.id, false, taskRep.desc);
 
     undoneMap.set(taskRep.id, taskRep);
     localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
@@ -155,8 +183,10 @@ function tickOff(){
 }
 
 function dropDown(){
-    uTaskShow();
-    let caller = event.target.nextSibling;
+    event.target.parentNode.nextSibling.classList.toggle("not-show");
+    event.preventDefault();
+    let descDiv = event.target.parentNode.nextSibling;
+    descDiv.children[0].focus();
 }
 
 function removeAll() {
@@ -200,7 +230,18 @@ function taskUnpressed() {
     task.classList.toggle("pressed");
 }
 
-function uTaskShow() {
-    event.target.parentNode.nextSibling.classList.toggle("not-show");
+function saveDesc(){
+    let textField = event.target;
+    let task = textField.parentNode.parentNode.children[0];
+    // console.log(task);
+    if (task.parentNode.parentNode == table1){
+        undoneMap.get(parseInt(task.id)).desc = textField.value;
+        localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+    }
+    else{
+        doneMap.get(parseInt(task.id)).desc = textField.value;
+        localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+
+    }
 }
 

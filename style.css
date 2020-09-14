@@ -6,19 +6,33 @@
     display: none;
 }
 
-.container-outer {
-    width: 400px; 
-    margin: 0 auto; 
-}
 
 body {
     background-image: url("images\\photo-1518655048521-f130df041f66.jfif");
     background-size: cover;
     background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 150px auto;
 }
 
 /* headline 
 _______________________________________________ */
+.side-bar {
+    height: 100%;
+    /* width: 20%; */
+    /* z-index: 1; */
+    border: solid;
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+
+.container-outer {
+    border: solid red;
+    width: 400px; 
+    margin: 0 auto 0 20px; 
+}
+
+
 #new-task {
     width: 85%;
 }
@@ -136,5 +150,14 @@ _______________________________________________ */
     display: none;
 }
 
+.desc-text {
+    width: 93%;
+    min-height: 50px;
+    margin: 0 auto;
+}
 
+.fa-times {
+    vertical-align: top;
+    margin: 0px 0px 0px 3px;
+}
 
