@@ -10,32 +10,36 @@
     </head>
 
     <body>
-        <div class="side-bar" id="side-bar">
-            <button onclick="newList()">New List</button>
-        </div>
+        <div class="title">Todo List by Zekun</div>
+        <div class="content">
+            <div class="side-bar" id="side-bar">
+                <input type="text" id="new-list-input">
+                <button id="new-list-btn" onclick="newList()">New List</button>
+            </div>
 
-        <div class="container-outer">        
-            <div class="container-title">
-                <h1 class="title" style="text-align:center;">Todo Liste</h1> 
-            </div>
-            <div id="container2" class="container2">
-                <div class=undone-task-div>
-                    <p class="undone-task">Undone Task: <span id="undone-count">0</span> <button id="remove-all-undone">Remove All</button> </p>
-                    <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
-                    <button id="add" onclick="saveAdd()">Add</button>
-                    <div id="table1" class="table1">
-            
-                    </div>
+            <div id="container-outer" class="container-outer">        
+                <div class="container-title">
+                    <h1 id="list-name"></h1> 
                 </div>
-                
-                <div class=finished-task-div>
-                    <p class="finished-task">Finished Task: <span id="finished-count">0</span><button id="remove-all-finished">Remove All</button></p>
-                    <div id="table2" class="table2"> 
+                <div id="container2" class="container2">
+                    <div class="undone-task-div">
+                        <p class="undone-task">Undone Task: <span id="undone-count">0</span> <button id="remove-all-undone">Remove All</button> </p>
+                        <input id="new-task" placeholder="new task" onfocus="this.placeholder=''" onblur="this.placeholder = 'new task'">              
+                        <button id="add">Add</button>
+                        <div id="table1" class="table1">
                         
+                        </div>
+                    </div>
+                    
+                    <div class=finished-task-div>
+                        <p class="finished-task">Finished Task: <span id="finished-count">0</span><button id="remove-all-finished">Remove All</button></p>
+                        <div id="table2" class="table2"> 
+                            
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
     </body>
     <script src="todo.js"></script>
 </html>

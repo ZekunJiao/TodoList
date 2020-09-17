@@ -11,27 +11,66 @@ body {
     background-image: url("images\\photo-1518655048521-f130df041f66.jfif");
     background-size: cover;
     background-repeat: no-repeat;
-    display: grid;
-    grid-template-columns: 150px auto;
 }
 
 /* headline 
 _______________________________________________ */
-.side-bar {
-    height: 100%;
-    /* width: 20%; */
-    /* z-index: 1; */
-    border: solid;
-    grid-column-start: 1;
-    grid-column-end: 2;
+
+.title {
+    width: 15%;
+    font-size: x-large;
+    font-weight: bold;
 }
 
+.content {
+    display: grid;
+    grid-template-columns: 150px 150px auto;
+}
+
+
+/* side bar 
+--------------------------------------------------*/
+.side-bar {
+    height: 100%;
+    z-index: 1;
+    border: solid;
+    grid-column-start: 2;
+    grid-column-end: 3;
+}
+
+#new-list-input{
+    width: 90%;
+}
+
+.list-div{
+    width: 100%;
+}
+
+/* .list-div:hover{
+    background: rgb(220, 248, 250);
+} */
+
+.list-element{
+    width: 89%;
+    margin: 3px 0;
+    padding: 3px 0;
+    display: inline-block;
+}
+
+
+
+
+/* Task container
+--------------------------------------------------*/
 .container-outer {
     border: solid red;
     width: 400px; 
     margin: 0 auto 0 20px; 
 }
 
+#list-name {
+    text-align: center;
+}
 
 #new-task {
     width: 85%;
@@ -42,11 +81,8 @@ _______________________________________________ */
     margin: -1%;
 }
 
-.title {
-    text-align: center;
-}
 
-/* Task
+/* Task-element
 _______________________________________________ */
 .task-div {
     margin: 5px 0;

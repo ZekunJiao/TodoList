@@ -1,35 +1,91 @@
 // localStorage.clear();   
 let undoneMap = new Map([]);
 let doneMap = new Map([]);
+let listMap = new Map([]);
+let currentListId;
 
-
-if (localStorage.getItem("undoneMap")){
-    undoneMap = new Map(JSON.parse(localStorage.getItem("undoneMap")));
+if (localStorage.getItem("listMap")){
+    listMap = new Map(JSON.parse(localStorage.getItem("listMap")));
 }
 
-if (localStorage.getItem("doneMap")){
-    doneMap = new Map(JSON.parse(localStorage.getItem("doneMap")));
+for (let [key, value] of listMap.entries()) {
+    insertList(value, key);
 }
 
-for (let value of undoneMap.values()) {
-    insert(value.name, value.id, false, value.desc);
-    console.log(value.desc);
-}
+document.getElementById("new-list-input").addEventListener("keyup", function(){
+    if (event.keyCode === 13){
+        event.preventDefault();
+        document.getElementById("new-list-btn").onclick();
+    }
+})
 
-for (let value of doneMap.values()) {
-    insert(value.name, value.id, true, value.desc);
-}
+document.getElementById("new-list-input").placeholder = "new list";
 
+document.getElementById("new-list-input").addEventListener("focus", function(){
+    event.target.placeholder = "";
+})
+
+document.getElementById("new-list-input").addEventListener("blur", function(){
+    event.target.placeholder = "new list";
+})
+
+document.getElementById("add").onclick = saveAdd;
 table1 = document.getElementById("table1");
 document.getElementById("remove-all-undone").onclick = removeAll;
 document.getElementById("remove-all-finished").onclick = removeAll;
 
-document.getElementById("new-task").addEventListener("keyup", function(event){
+document.getElementById("new-task").addEventListener("keyup", function(){
     if (event.keyCode === 13){
         event.preventDefault();
         document.getElementById("add").onclick();
     }
 });
+
+if (document.getElementById("side-bar").children.length > 2){
+    currentListId = document.getElementById("side-bar").children[2].firstChild.id;
+    load(document.getElementById("side-bar").children[2].firstChild.id);
+}
+if (!currentListId){
+    document.getElementById("container2").style.display = "none";
+    document.getElementById("list-name").innerHTML = "Choose or create a list!"
+}
+
+function load(listId){
+    document.getElementById("container2").style.removeProperty("display");
+
+    if (currentListId){
+        document.getElementById(currentListId).parentNode.style.background = "transparent";
+    }
+
+    undoneMap = new Map([]);
+    doneMap = new Map([]);
+    currentListId = listId;
+    document.getElementById(currentListId).parentNode.style.background = "lightblue";
+
+    let listName = document.getElementById(listId).innerHTML;
+    document.getElementById("list-name").innerHTML = listName;
+    document.getElementById("table1").innerHTML = "";
+    document.getElementById("table2").innerHTML = "";
+
+    if (localStorage.getItem("undoneMap" + listId)){
+        undoneMap = new Map(JSON.parse(localStorage.getItem("undoneMap" + listId)));
+    }
+
+
+    if (localStorage.getItem("doneMap" + listId)){
+        doneMap = new Map(JSON.parse(localStorage.getItem("doneMap" + listId)));
+    }
+
+    for (let value of undoneMap.values()) {
+        insert(value.name, value.id, false, value.desc);
+    }
+
+    for (let value of doneMap.values()) {
+        insert(value.name, value.id, true, value.desc);
+    }
+
+
+}
 
 function insert(name, id, done, desc){
     let table;
@@ -83,11 +139,11 @@ function insert(name, id, done, desc){
         descText.value = "";
         if (!done){
             undoneMap.get(parseInt(taskDiv.id)).desc = descText.value;
-            localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+            localStorage.setItem("undoneMap" + currentListId, JSON.stringify(Array.from(undoneMap.entries())));
         }
         else{
             doneMap.get(parseInt(taskDiv.id)).desc = descText.value;
-            localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+            localStorage.setItem("doneMap" + currentListId, JSON.stringify(Array.from(doneMap.entries())));
         }
     });
     descText.onchange = saveDesc;
@@ -98,7 +154,7 @@ function insert(name, id, done, desc){
     let bigDiv = document.createElement("DIV");
     bigDiv.appendChild(taskDiv);
     bigDiv.appendChild(descDiv);
-    
+    bigDiv.setAttribute("listId", currentListId);
 
     table.insertBefore(bigDiv, table.firstChild);
 
@@ -107,14 +163,14 @@ function insert(name, id, done, desc){
 
     document.getElementById("new-task").value = '';
     document.getElementById("new-task").focus();
-    updateCount();
+    updateCount(); 
 
 }
 
 function saveAdd(){
     if (document.getElementById("new-task").value == ''){
-            alert("Task is empty!");
-            return;
+        alert("Task is empty!");
+        return;
     }
 
     let taskName = document.getElementById("new-task").value;
@@ -129,7 +185,7 @@ function saveAdd(){
     insert(taskName, taskRep.id, false, taskRep.desc);
 
     undoneMap.set(taskRep.id, taskRep);
-    localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+    localStorage.setItem("undoneMap" + currentListId, JSON.stringify(Array.from(undoneMap.entries())));
 }
 
 function deleteTask(){
@@ -139,13 +195,13 @@ function deleteTask(){
     if (table == table1){
         table1.removeChild(task);
         undoneMap.delete(parseInt(task.children[0].id));
-        localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+        localStorage.setItem("undoneMap" + currentListId, JSON.stringify(Array.from(undoneMap.entries())));
         
     }
     else {
         table2.removeChild(task);
         doneMap.delete(parseInt(task.children[0].id));
-        localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+        localStorage.setItem("doneMap" + currentListId, JSON.stringify(Array.from(doneMap.entries())));
     }
     
     updateCount();
@@ -164,9 +220,9 @@ function tickOff(){
         table2.insertBefore(bigTask, table2.firstChild);
         taskRep = undoneMap.get(parseInt(task.id));
         undoneMap.delete(parseInt(task.id));
-        localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+        localStorage.setItem("undoneMap" + currentListId, JSON.stringify(Array.from(undoneMap.entries())));
         doneMap.set(taskRep.id, taskRep);
-        localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+        localStorage.setItem("doneMap" + currentListId, JSON.stringify(Array.from(doneMap.entries())));
     }
     else{
         task.children[2].classList.add("unchecked");
@@ -174,9 +230,9 @@ function tickOff(){
         table1.insertBefore(bigTask, table1.firstChild);
         taskRep = doneMap.get(parseInt(task.id));
         doneMap.delete(parseInt(task.id));
-        localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+        localStorage.setItem("doneMap" + currentListId, JSON.stringify(Array.from(doneMap.entries())));
         undoneMap.set(taskRep.id, taskRep);
-        localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+        localStorage.setItem("undoneMap" + currentListId, JSON.stringify(Array.from(undoneMap.entries())));
     }
 
     updateCount();   
@@ -233,15 +289,80 @@ function taskUnpressed() {
 function saveDesc(){
     let textField = event.target;
     let task = textField.parentNode.parentNode.children[0];
-    // console.log(task);
     if (task.parentNode.parentNode == table1){
         undoneMap.get(parseInt(task.id)).desc = textField.value;
-        localStorage.setItem("undoneMap", JSON.stringify(Array.from(undoneMap.entries())));
+        localStorage.setItem("undoneMap" + currentListId, JSON.stringify(Array.from(undoneMap.entries())));
     }
     else{
         doneMap.get(parseInt(task.id)).desc = textField.value;
-        localStorage.setItem("doneMap", JSON.stringify(Array.from(doneMap.entries())));
+        localStorage.setItem("doneMap" + currentListId, JSON.stringify(Array.from(doneMap.entries())));
 
     }
 }
 
+function newList() {
+    if (document.getElementById("new-list-input").value == ""){
+        alert("list name cant be empty");
+         return;
+    }
+    listName = document.getElementById("new-list-input").value;
+    listId = Date.now().toString();
+    insertList(listName, listId);
+    listMap.set(listId, listName);
+    localStorage.setItem("listMap", JSON.stringify(Array.from(listMap.entries())));
+}
+
+function insertList(listName, listId){
+    sideBar = document.getElementById("side-bar");
+
+    listElement = document.createElement("P");
+    listElement.innerHTML = listName;
+    listElement.id = listId;
+    listElement.classList.add("list-element");
+    listElement.addEventListener("click", function(){
+        load(event.target.id);
+    });
+
+
+    listDeleteBtn = document.createElement("I");
+    listDeleteBtn.classList.add("fas");
+    listDeleteBtn.classList.add("fa-trash-alt");
+    listDeleteBtn.addEventListener("click", function(){
+        deleteList();
+    })
+
+    listDiv = document.createElement("DIV");
+    listDiv.appendChild(listElement);
+    listDiv.appendChild(listDeleteBtn);
+    listDiv.classList.add("list-div");
+
+    listElement.parentNode.addEventListener("mouseenter", function(){
+        if (currentListId != event.target.firstChild.id)
+            event.target.style.background = "rgb(220, 248, 250)";
+    });
+    listElement.parentNode.addEventListener("mouseleave", function(){
+        if (currentListId != event.target.firstChild.id)
+            event.target.style.removeProperty("background");
+    });
+
+    sideBar.appendChild(listDiv);
+    document.getElementById("new-list-input").value = "";
+    document.getElementById("new-task").focus();
+}
+
+function deleteList() {
+    listId = event.target.parentNode.firstChild.id;
+    document.getElementById("side-bar").removeChild(event.target.parentNode);
+    listMap.delete(listId);
+    localStorage.setItem("listMap", JSON.stringify(Array.from(listMap.entries())));
+
+    if(document.getElementById("side-bar").children.length <= 2){
+        currentListId = null;
+        document.getElementById("container2").style.display = "none";
+        document.getElementById("list-name").innerHTML = "Choose or create a list!"
+    }
+    else if (listId == currentListId){
+        currentListId = document.getElementById("side-bar").children[2].firstChild.id;
+        load(currentListId);
+    }
+}
